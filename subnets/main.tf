@@ -5,7 +5,7 @@ resource "aws_subnet" "main" {
   vpc_id      = var.vpc_id
   #cidr_block = "10.0.1.0/24"
   cidr_block = var.subnets[count.index]
-  avaavailability_zone = var.AZ[count.index]
+  avavailability_zone = var.AZ[count.index]
 
 
   tags = {
