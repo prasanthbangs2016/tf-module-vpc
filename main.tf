@@ -17,6 +17,9 @@ module "subnets" {
     ngw     = try(each.value["ngw"], false)
     igw     = try(each.value["ngw"], false)
     env     = var.env
+    #sending internet gateway public subnet
+    #igw_id  = aws_internet_gateway.igw.id
+    #route_table = aws_route_table.route_table
 }
 
 resource "aws_internet_gateway" "igw" {
@@ -25,4 +28,23 @@ resource "aws_internet_gateway" "igw" {
   tags = {
     Name = "${var.env}-igw"
   }
+}
+
+
+resource "aws_route_table" "route_table" {
+  for_each = var.subnets
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "${each.value["name"]}-rt"
+  }
+}
+
+resource "aws_route_table" "public" {
+    for_each = var.subnets
+    #route_table_id      
+    vpc_id = aws_vpc.main.id
+    tags = {
+        Name    = "${each.value["name"]}-rt"
+    }
 }
