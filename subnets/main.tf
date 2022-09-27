@@ -19,8 +19,17 @@ resource "aws_subnet" "main" {
   cidr_block        = var.subnets[count.index]
   availability_zone = var.AZ[count.index]
 
+
   tags = {
     Name = "${var.name}-subnet"
+  }
+}
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = var.vpc_id
+
+  tags = {
+    Name = "${var.env}-igw"
   }
 }
 
