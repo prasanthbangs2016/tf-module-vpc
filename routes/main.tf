@@ -6,3 +6,10 @@ resource "aws_route_table" "route_table" {
     Name = "${var.name}-rt"
   }
 }
+
+# # #attaching route tables to public subnets
+resource "aws_route_table_association" "public" {
+  count      = length(module.subnets.ids[var.name].out[*].id)
+  subnet_id      = element(module.subnets[var.name].out[*].id, count.index)
+  route_table_id = aws_route_table.route_table[var.name].id
+}
