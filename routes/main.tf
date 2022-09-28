@@ -7,15 +7,15 @@ resource "aws_route_table" "route_table" {
   }
 }
 
-# # # #attaching route tables to public subnets
-resource "aws_route_table_association" "public" {
-  #first public,apps,db
-  #since values are hence having tomap function 
-  #count      = length(tomap(var.subnet_ids.ids[var.name].out[*].id))
-  count      = length(var.subnet_ids[var.name].subnet_ids)
-  subnet_id      = element(var.subnet_ids[var.name].subnet_ids, count.index)
-  route_table_id = aws_route_table.route_table.id
-}
+# # # # #attaching route tables to all the subnets
+# resource "aws_route_table_association" "public" {
+#   #first public,apps,db
+#   #since values are hence having tomap function 
+#   #count      = length(tomap(var.subnet_ids.ids[var.name].out[*].id))
+#   count      = length(var.subnet_ids[var.name].subnet_ids)
+#   subnet_id      = element(var.subnet_ids[var.name].subnet_ids, count.index)
+#   route_table_id = aws_route_table.route_table.id
+# }
 
 #writing into a file
 resource "local_file" "foo" {
@@ -25,6 +25,6 @@ resource "local_file" "foo" {
 
     #content  = var.subnet_ids["${var.name}"]
     #converting map to string
-    content = replace(replace(jsonencode(var.subnet_ids), "\"", ""), ":", "=")
+    content = length(var.subnet_ids[var.name].subnet_ids)
     filename = "/tmp/out"
 }
