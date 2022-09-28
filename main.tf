@@ -125,8 +125,8 @@ resource "aws_vpc_peering_connection" "peering-to-default-vpc" {
 
 #adding route tables to peering connection
 resource "aws_route" "peering" {
-  for_each = var.subnets
-  route_table_id          = aws_route_table.route_table["${each.value["name"]}"].id
+  count                   = length(aws_route_table.route_table[*].id)
+  route_table_id          = element(aws_route_table.route_table[*].id, count.index
   destination_cidr_block  = "0.0.0.0/0"
   #it should go through internet gateway
   vpc_peering_connection_id        = aws_vpc_peering_connection.peering-to-default-vpc.id
