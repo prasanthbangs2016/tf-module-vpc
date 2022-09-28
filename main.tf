@@ -21,6 +21,16 @@ module "subnets" {
     #igw_id  = aws_internet_gateway.igw.id
     #route_table = aws_route_table.route_table
 }
+
+module "routes" {
+    for_each = var.subnets
+    source = "./routes"
+    #sending vpc info
+    vpc_id  = aws_vpc.main.id
+    name    = each.value["name"]
+
+}
+
 #creating internet gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
@@ -48,80 +58,80 @@ resource "aws_nat_gateway" "ngw" {
 
 
 #creating table
-resource "aws_route_table" "route_table" {
-  for_each = var.subnets
-  vpc_id = aws_vpc.main.id
+# # resource "aws_route_table" "route_table" {
+# #   for_each = var.subnets
+# #   vpc_id = aws_vpc.main.id
 
-  tags = {
-    Name = "${each.value["name"]}-rt"
-  }
-}
+# #   tags = {
+# #     Name = "${each.value["name"]}-rt"
+# #   }
+# # }
 
-#prints all route tables public,apps,db
-# output "out" {
-#   value = aws_route_table.route_table
+# # #prints all route tables public,apps,db
+# # # output "out" {
+# # #   value = aws_route_table.route_table
   
-# }
+# # # }
 
-#print route table id
-#output "out" {
-#  value = aws_route_table.route_table["public"].id
-#
-#}
+# # #print route table id
+# # #output "out" {
+# # #  value = aws_route_table.route_table["public"].id
+# # #
+# # #}
 
-#attaching routes to route table
-resource "aws_route" "public" {
-    #since it is a list hence so
-    route_table_id          = aws_route_table.route_table["public"].id
-    destination_cidr_block  = "0.0.0.0/0"
-    #it should go through internet gateway
-    gateway_id              = aws_internet_gateway.igw.id
+# # #attaching routes to route table
+# # resource "aws_route" "public" {
+# #     #since it is a list hence so
+# #     route_table_id          = aws_route_table.route_table["public"].id
+# #     destination_cidr_block  = "0.0.0.0/0"
+# #     #it should go through internet gateway
+# #     gateway_id              = aws_internet_gateway.igw.id
  
-}
-#attaching route tables to public subnets
-resource "aws_route_table_association" "public" {
-  count      = length(module.subnets["public"].out[*].id)
-  subnet_id      = element(module.subnets["public"].out[*].id, count.index)
-  route_table_id = aws_route_table.route_table["public"].id
-}
+# # }
+# # #attaching route tables to public subnets
+# # resource "aws_route_table_association" "public" {
+# #   count      = length(module.subnets["public"].out[*].id)
+# #   subnet_id      = element(module.subnets["public"].out[*].id, count.index)
+# #   route_table_id = aws_route_table.route_table["public"].id
+# # }
 
-resource "aws_route_table_association" "apps" {
-  count      = length(module.subnets["apps"].out[*].id)
-  subnet_id      = element(module.subnets["apps"].out[*].id, count.index)
-  route_table_id = aws_route_table.route_table["apps"].id
-}
+# # resource "aws_route_table_association" "apps" {
+# #   count      = length(module.subnets["apps"].out[*].id)
+# #   subnet_id      = element(module.subnets["apps"].out[*].id, count.index)
+# #   route_table_id = aws_route_table.route_table["apps"].id
+# # }
 
-resource "aws_route_table_association" "db" {
-  count      = length(module.subnets["db"].out[*].id)
-  subnet_id      = element(module.subnets["db"].out[*].id, count.index)
-  route_table_id = aws_route_table.route_table["db"].id
-}
+# # resource "aws_route_table_association" "db" {
+# #   count      = length(module.subnets["db"].out[*].id)
+# #   subnet_id      = element(module.subnets["db"].out[*].id, count.index)
+# #   route_table_id = aws_route_table.route_table["db"].id
+# # }
 
 
-resource "aws_route" "apps" {
-  #since it is a list hence so
-  route_table_id          = aws_route_table.route_table["apps"].id
-  destination_cidr_block  = "0.0.0.0/0"
-  #it should go through internet gateway
-  nat_gateway_id              = aws_nat_gateway.ngw.id
+# # resource "aws_route" "apps" {
+# #   #since it is a list hence so
+# #   route_table_id          = aws_route_table.route_table["apps"].id
+# #   destination_cidr_block  = "0.0.0.0/0"
+# #   #it should go through internet gateway
+# #   nat_gateway_id              = aws_nat_gateway.ngw.id
 
-}
+# # }
 
-resource "aws_route" "db" {
-  #since it is a list hence so
-  route_table_id          = aws_route_table.route_table["db"].id
-  destination_cidr_block  = "0.0.0.0/0"
-  #it should go through internet gateway
-  nat_gateway_id              = aws_nat_gateway.ngw.id
+# # resource "aws_route" "db" {
+# #   #since it is a list hence so
+# #   route_table_id          = aws_route_table.route_table["db"].id
+# #   destination_cidr_block  = "0.0.0.0/0"
+# #   #it should go through internet gateway
+# #   nat_gateway_id              = aws_nat_gateway.ngw.id
 
-}
+# # }
 
-resource "aws_vpc_peering_connection" "peering-to-default-vpc" {
-  peer_vpc_id   = aws_vpc.main.id
-  vpc_id        = var.default_vpc_id
-  auto_accept   = true
+# # resource "aws_vpc_peering_connection" "peering-to-default-vpc" {
+# #   peer_vpc_id   = aws_vpc.main.id
+# #   vpc_id        = var.default_vpc_id
+# #   auto_accept   = true
 
-}
+# }
 
 #adding route tables to peering connection
 #resource "aws_route" "peering" {
