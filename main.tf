@@ -124,14 +124,14 @@ resource "aws_vpc_peering_connection" "peering-to-default-vpc" {
 }
 
 #adding route tables to peering connection
-#resource "aws_route" "peering" {
-#  count                   = length(aws_route_table.route_table[*].id)
-#  route_table_id          = element(aws_route_table.route_table[*].id, count.index
-#  destination_cidr_block  = var.default_vpc_id
-#  #it should go through internet gateway
-#  vpc_peering_connection_id        = aws_vpc_peering_connection.peering-to-default-vpc.id
-#
-#}
+resource "aws_route" "peering" {
+  count                   = length(aws_route_table.route_table[*].id)
+  route_table_id          = element(aws_route_table.route_table[*].id, count.index
+  destination_cidr_block  = var.default_vpc_id
+  #it should go through internet gateway
+  vpc_peering_connection_id        = aws_vpc_peering_connection.peering-to-default-vpc.id
+
+}
 
 
 
