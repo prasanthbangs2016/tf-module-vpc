@@ -30,7 +30,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-#using this elatic ip internet will be shared to nat
+#using this elastic ip internet will be shared to nat
 resource "aws_eip" "ngw" {
   vpc = true
 
@@ -116,7 +116,10 @@ resource "aws_route" "db" {
 
 }
 
-
+resource "aws_vpc_peering_connection" "foo" {
+  peer_vpc_id   = aws_vpc.main.id
+  vpc_id        = aws_vpc.foo.id
+}
 
 
 
