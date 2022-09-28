@@ -40,13 +40,23 @@ resource "aws_route_table" "route_table" {
   }
 }
 
-#creating public route table,and attaching to subnets
-resource "aws_route" "public" {
-    route_table_id          = aws_route_table.route_table["public"].id
-    destination_cidr_block  = "0.0.0.0/0" 
-    gateway_id              = aws_internet_gateway.igw.id
- 
+output "out" {
+  value = aws_route_table.route_table
+  
 }
+
+# #creating public route table,and attaching to subnets
+# resource "aws_route" "public" {
+#     route_table_id          = aws_route_table.route_table["public"].id
+#     destination_cidr_block  = "0.0.0.0/0" 
+#     gateway_id              = aws_internet_gateway.igw.id
+ 
+# }
+
+# output "out" {
+#   value = aws_route.
+  
+# }
 
 
 # resource "aws_route" "private-apps" {
@@ -76,9 +86,9 @@ resource "aws_route" "public" {
   
 # }
 
-output "out" {
-    value = module.subnets
+# output "out" {
+#     value = module.subnets
   
-}
+# }
 
 
