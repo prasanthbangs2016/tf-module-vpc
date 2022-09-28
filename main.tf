@@ -103,7 +103,7 @@ resource "aws_route" "apps" {
   route_table_id          = aws_route_table.route_table["apps"].id
   destination_cidr_block  = "0.0.0.0/0"
   #it should go through internet gateway
-  gateway_id              = aws_internet_gateway.igw.id
+  gateway_id              = aws_nat_gateway.ngw.id
 
 }
 
@@ -112,7 +112,7 @@ resource "aws_route" "db" {
   route_table_id          = aws_route_table.route_table["db"].id
   destination_cidr_block  = "0.0.0.0/0"
   #it should go through internet gateway
-  gateway_id              = aws_internet_gateway.igw.id
+  gateway_id              = aws_nat_gateway.ngw.id
 
 }
 
