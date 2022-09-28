@@ -75,7 +75,3 @@ output "out" {
     value = aws_route_table.route_table["public"].id
   
 }
-
-output "subnets" {
-  value = module.subnets.subnets
-}
