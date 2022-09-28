@@ -30,7 +30,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-
+#creating table
 resource "aws_route_table" "route_table" {
   for_each = var.subnets
   vpc_id = aws_vpc.main.id
@@ -40,46 +40,46 @@ resource "aws_route_table" "route_table" {
   }
 }
 
+#prints all route tables public,apps,db
 # output "out" {
 #   value = aws_route_table.route_table
   
 # }
 
-output "out" {
-  value = aws_route_table.route_table["public"].id
-  
+#print route table id
+#output "out" {
+#  value = aws_route_table.route_table["public"].id
+#
+#}
+
+#attaching routes to route table
+resource "aws_route" "public" {
+    #since it is a list hence so
+    route_table_id          = aws_route_table.route_table["public"].id
+    destination_cidr_block  = "0.0.0.0/0"
+    #it should go through internet gateway
+    gateway_id              = aws_internet_gateway.igw.id
+ 
 }
 
-# #creating public route table,and attaching to subnets
-# resource "aws_route" "public" {
-#     route_table_id          = aws_route_table.route_table["public"].id
-#     destination_cidr_block  = "0.0.0.0/0" 
-#     gateway_id              = aws_internet_gateway.igw.id
- 
-# }
-
-# output "out" {
-#   value = aws_route.
-  
-# }
 
 
 # resource "aws_route" "private-apps" {
 #     for_each                = var.subnets
 #     route_table_id          = aws_route_table.route_table["public"].id
-#     destination_cidr_block  = "0.0.0.0/0" 
+#     destination_cidr_block  = "0.0.0.0/0"
 #     gateway_id              = aws_internet_gateway.igw.id
- 
+#
 # }
-
-
-
+#
+#
+#
 # resource "aws_route" "private-db" {
 #     for_each                = var.subnets
 #     route_table_id          = aws_route_table.route_table["public"].id
-#     destination_cidr_block  = "0.0.0.0/0" 
+#     destination_cidr_block  = "0.0.0.0/0"
 #     gateway_id              = aws_internet_gateway.igw.id
- 
+#
 # }
 
 
@@ -91,9 +91,9 @@ output "out" {
   
 # }
 
-# output "out" {
-#     value = module.subnets
-  
-# }
+ output "out" {
+     value = module.subnets.out
+
+ }
 
 
