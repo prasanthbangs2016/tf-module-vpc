@@ -10,8 +10,10 @@ resource "aws_route_table" "route_table" {
 # # # #attaching route tables to public subnets
 resource "aws_route_table_association" "public" {
   #first public,apps,db
-  count      = length(tomap(var.subnet_ids.ids[var.name].out[*].id))
-  subnet_id      = element(tomap(var.subnet_ids[var.name].out[*].id, count.index))
+  #since values are hence having tomap function 
+  #count      = length(tomap(var.subnet_ids.ids[var.name].out[*].id))
+  count      = length(var.subnet_ids.ids[var.name].subnet_ids)
+  subnet_id      = element(var.subnet_ids[var.name].subnet_ids, count.index)
   route_table_id = aws_route_table.route_table[var.name].id
 }
 

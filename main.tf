@@ -9,7 +9,9 @@ resource "aws_vpc" "main" {
 module "subnets" {
     for_each = var.subnets
     source = "./subnets"
+    #name = "apps-private/db/public dev.tfvars
     name    = each.value["name"]
+    #subnet_cidr = ["10.100.0.0/24", "10.100.10.0/24"] dev.tfvars
     subnets = each.value["subnet_cidr"]
     vpc_id  = aws_vpc.main.id
     AZ      = var.AZ
@@ -27,6 +29,7 @@ module "routes" {
     source = "./routes"
     #sending vpc info
     vpc_id  = aws_vpc.main.id
+    #dev.tfvars(public/app/db)-rt
     name    = each.value["name"]
     #all the info i have in subnet will be sending to subnet_ids
     subnet_ids = module.subnets
