@@ -28,6 +28,7 @@ module "routes" {
     #sending vpc info
     vpc_id  = aws_vpc.main.id
     name    = each.value["name"]
+    #all the info i have in subnet will be sending to subnet_ids
     subnet_ids = module.subnets
 
 }
