@@ -98,9 +98,15 @@ resource "aws_route_table_association" "public" {
   
 # }
 
- output "out" {
-     value = module.subnets.out[*].id
+# output "out" {
+#     value = module.subnets
+#
+# }
 
- }
+output "out" {
+  value = module.subnets["public"].out[*].id
+
+}
+
 
 
