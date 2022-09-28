@@ -61,6 +61,13 @@ resource "aws_route" "public" {
     gateway_id              = aws_internet_gateway.igw.id
  
 }
+#attaching route tables to subnets
+resource "aws_route_table_association" "public" {
+  count      = length(module.subnets["public"].out[*].id)
+  subnet_id      = element(module.subnets["public"].out[*].id, count.index)
+  route_table_id = aws_route_table.route_table["public"].id
+}
+
 
 
 
@@ -92,7 +99,7 @@ resource "aws_route" "public" {
 # }
 
  output "out" {
-     value = module.subnets
+     value = module.subnets.out[*].id
 
  }
 

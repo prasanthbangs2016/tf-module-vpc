@@ -26,12 +26,17 @@ resource "aws_subnet" "main" {
 }
 
 
+
 #see the value of subnet
 #output "out" {
 #  value = aws_subnet.main
 #
 #}
 
+#output "out" {
+#  value = aws_subnet.main
+#}
 output "out" {
   value = aws_subnet.main
 }
+
