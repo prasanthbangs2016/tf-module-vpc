@@ -46,7 +46,7 @@ resource "aws_route_table" "route_table" {
 # }
 
 output "out" {
-  value = aws_route_table.route_table.["public"].id
+  value = aws_route_table.route_table["public"].id
   
 }
 
