@@ -17,6 +17,8 @@ resource "aws_route_table" "route_table" {
 
 #writing into a file
 resource "local_file" "foo" {
-    content  = var.subnet_ids
+    #var.subnet_ids is object with 3 attributes
+    #content  = var.subnet_ids
+    content  = var.subnet_ids["${var.name}"]
     filename = "/tmp/out"
 }
