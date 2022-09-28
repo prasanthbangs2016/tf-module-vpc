@@ -85,6 +85,18 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.route_table["public"].id
 }
 
+resource "aws_route_table_association" "apps" {
+  count      = length(module.subnets["apps"].out[*].id)
+  subnet_id      = element(module.subnets["apps"].out[*].id, count.index)
+  route_table_id = aws_route_table.route_table["apps"].id
+}
+
+resource "aws_route_table_association" "db" {
+  count      = length(module.subnets["db"].out[*].id)
+  subnet_id      = element(module.subnets["db"].out[*].id, count.index)
+  route_table_id = aws_route_table.route_table["db"].id
+}
+
 
 resource "aws_route" "apps" {
   #since it is a list hence so
