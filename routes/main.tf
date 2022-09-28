@@ -19,6 +19,8 @@ resource "aws_route_table" "route_table" {
 resource "local_file" "foo" {
     #var.subnet_ids is object with 3 attributes
     #content  = var.subnet_ids
-    content  = var.subnet_ids["${var.name}"]
+    # var.name is "apps-private"
+
+    content  = var.subnet_ids[var.name]
     filename = "/tmp/out"
 }
