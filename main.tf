@@ -71,7 +71,14 @@ resource "aws_route" "public" {
 
 
 
+# output "out" {
+#     value = aws_route_table.route_table["public"].id
+  
+# }
+
 output "out" {
-    value = aws_route_table.route_table["public"].id
+    value = module.subnets
   
 }
+
+
