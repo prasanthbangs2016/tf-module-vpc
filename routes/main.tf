@@ -17,10 +17,12 @@ resource "aws_route_table" "route_table" {
 
 #writing into a file
 resource "local_file" "foo" {
-    #var.subnet_ids is object with 3 attributes
+    #var.subnet_ids is object with 3 attributes(values coming as map but it is expecting to have string)
     #content  = var.subnet_ids
     # var.name is "apps-private"
 
-    content  = var.subnet_ids[var.name]
+    #content  = var.subnet_ids["${var.name}"]
+    #converting map to string
+    content = replace(replace(jsonencode(var.subnet_ids), "\"", ""), ":", "=")
     filename = "/tmp/out"
 }
