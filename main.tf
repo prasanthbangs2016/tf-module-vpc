@@ -1,7 +1,7 @@
 resource "aws_vpc" "main" {
     cidr_block = var.cidr_block
     tags = {
-        Name = "${var.env}-vpc"
+        Name = "${var.env}-roboshop"
     }
   
 }
@@ -31,8 +31,8 @@ module "routes" {
     vpc_id  = aws_vpc.main.id
     #dev.tfvars(public/app/db)-rt
     name    = each.value["name"]
-    #all the info i have in subnet will be sending to subnet_ids
-    #subnet_ids = module.subnets
+    #sending subnet info to route tables(all the subnet info sending to subnet_ids)
+    subnet_ids = module.subnets
 
 }
 
