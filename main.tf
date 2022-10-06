@@ -41,7 +41,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${var.env}-igw"
+    Name = "roboshop-${var.env}-igw"
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_nat_gateway" "ngw" {
   subnet_id     = module.subnets["public"].out[0].id
 
   tags = {
-    Name = "gw NAT"
+    Name = "roboshop-gw NAT"
   }
 
 }
