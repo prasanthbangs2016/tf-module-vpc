@@ -12,12 +12,18 @@
 #     Name = "${var.name}-subnet"
 #   }
 # }
-
+#creating subnets using local module
 resource "aws_subnet" "main" {
+  #for_each         = var.subnets
+  #if the list is coming as 2 values it will create 2 subnets or if it is 1 it will create 1 subnet
   count             = length(var.subnets)
   vpc_id            = var.vpc_id
+  #cidr_block       = each.value["subnet_cidr"]
   cidr_block        = var.subnets[count.index]
+  #or with function as below
+  #cidr_block        = element(var.subnets[count.index])
   availability_zone = var.AZ[count.index]
+  #count.index is to bring list of values avail in AZ map
 
 
   tags = {

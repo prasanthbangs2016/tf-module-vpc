@@ -1,11 +1,12 @@
+#vpc creation
 resource "aws_vpc" "main" {
     cidr_block = var.cidr_block
     tags = {
-        Name = "${var.env}-roboshop"
+        Name = "roboshop-${var.env}"
     }
   
 }
-
+#calling subnet local module in vpc module
 module "subnets" {
     for_each = var.subnets
     source = "./subnets"
@@ -16,6 +17,7 @@ module "subnets" {
     vpc_id  = aws_vpc.main.id
     AZ      = var.AZ
     #if ngw/igw is there it will pick else it will not pick
+    #try function (try is check value
     ngw     = try(each.value["ngw"], false)
     igw     = try(each.value["ngw"], false)
     env     = var.env
@@ -47,7 +49,7 @@ resource "aws_internet_gateway" "igw" {
 
 #using this elastic ip internet will be shared to nat
 resource "aws_eip" "ngw" {
-  vpc = true
+  vpc = false
 
 }
 #creating nat gateway
