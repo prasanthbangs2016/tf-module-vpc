@@ -21,7 +21,7 @@ resource "aws_subnet" "main" {
 
 
   tags = {
-    Name = "${var.name}-subnet-${element(var.AZ, count.index)}"
+    Name = "roboshop-${var.name}-subnet-${element(var.AZ, count.index)}"
   }
 }
 
