@@ -32,7 +32,7 @@ module "routes" {
     #dev.tfvars(public/app/db)-rt
     name    = each.value["name"]
     #all the info i have in subnet will be sending to subnet_ids
-    subnet_ids = module.subnets
+    #subnet_ids = module.subnets
 
 }
 
