@@ -6,7 +6,7 @@ resource "aws_vpc" "main" {
     }
   
 }
-#calling subnet local module in vpc module
+#calling subnet local module in vpc module to subnets at one shot
 module "subnets" {
     for_each = var.subnets
     source = "./subnets"
@@ -21,17 +21,19 @@ module "subnets" {
     ngw     = try(each.value["ngw"], false)
     igw     = try(each.value["ngw"], false)
     env     = var.env
-    #sending internet gateway public subnet
+    #sending internet gateway to public subnet(console check subnet
     #igw_id  = aws_internet_gateway.igw.id
-    #route_table = aws_route_table.route_table
+    #route_table = aws_route_table.route-tables
 }
 
+#creating route table at one shot
 module "routes" {
+    #adding route table for all the subnets
     for_each = var.subnets
     source = "./routes"
     #sending vpc info
     vpc_id  = aws_vpc.main.id
-    #dev.tfvars(public/app/db)-rt
+    #dev.tfvars(public/app/db)-rt so it will create 3 route tables
     name    = each.value["name"]
     #sending subnet info to route tables(all the subnet info sending to subnet_ids)
     #subnet_ids = module.subnets
@@ -49,12 +51,17 @@ resource "aws_internet_gateway" "igw" {
 
 #using this elastic ip internet will be shared to nat
 resource "aws_eip" "ngw" {
-  vpc = false
+  vpc = true
+  tags = {
+    Name = "roboshop-dev-nat-eip"
+  }
 
 }
 #creating nat gateway
 resource "aws_nat_gateway" "ngw" {
+  #elastic ip for nat
   allocation_id = aws_eip.ngw.id
+  #nat association for subnets
   subnet_id     = module.subnets["public"].out[0].id
 
   tags = {
