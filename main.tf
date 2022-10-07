@@ -97,7 +97,7 @@ resource "aws_nat_gateway" "example" {
   subnet_id     =  module.subnets["public"].out[0].id
 
   tags = {
-    Name =  "Roboshop-${env}-NAT"
+    Name =  "Roboshop-${var.env}-NAT"
   }
 }
 
