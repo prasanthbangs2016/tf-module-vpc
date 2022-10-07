@@ -135,7 +135,7 @@ resource "aws_nat_gateway" "ngw" {
 
 #vpc peering
 
-resource "aws_vpc_peering_connection" "foo" {
+resource "aws_vpc_peering_connection" "roboshop-to-default" {
   #from
   peer_vpc_id   = aws_vpc.main.id
   #to
