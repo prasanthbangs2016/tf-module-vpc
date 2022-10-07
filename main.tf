@@ -133,6 +133,16 @@ resource "aws_nat_gateway" "ngw" {
 }
 
 
+#vpc peering
+
+resource "aws_vpc_peering_connection" "foo" {
+  #from
+  peer_vpc_id   = aws_vpc.main.id
+  #to
+  vpc_id        = var.default_vpc_id
+  auto_accept = true
+}
+
 
 
 
