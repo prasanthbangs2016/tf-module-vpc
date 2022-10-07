@@ -47,7 +47,7 @@ resource "aws_route_table" "route-tables" {
 }
 
 output "out" {
-  value = module.subnets
+  value = module.subnets["public"].out.id
 }
 
 #creating rout table , taking subnets and adding route table to subnets
