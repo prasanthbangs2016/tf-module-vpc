@@ -21,7 +21,7 @@ module "subnets" {
   igw       = try(each.value["igw"], false)
   env = var.env
   #adding igw to subnets bcz public subnets should hv then we call public subnet
-  igw_id    = aws_internet_gateway.igw.id
+ #igw_id    = aws_internet_gateway.igw.id
 #  route_tables  = aws_route_table.route-tables.*.id
 
 }
