@@ -13,3 +13,11 @@ resource "aws_subnet" "main" {
     Name = "Roboshop-${var.name}-${element(var.AZ, count.index)}"
   }
 }
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = var.vpc_id
+
+  tags = {
+Name = "roboshop-${var.env}-igw"
+}
+}
