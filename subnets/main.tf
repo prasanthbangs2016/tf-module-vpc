@@ -6,9 +6,10 @@ resource "aws_subnet" "main" {
   #cidr_block = each.value["subnet_cidr"] #this is for for each
   #it brings all the subnets cidr
   cidr_block = element(var.subnets, count.index)
-
+  #passing AZ
+  availability_zone = var.AZ
 
   tags = {
-    Name = "Roboshop-${var.name}"
+    Name = "Roboshop-${var.name}-${element(var.AZ, count.index)}"
   }
 }
