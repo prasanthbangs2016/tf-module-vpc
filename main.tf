@@ -59,6 +59,22 @@ resource "aws_route" "public" {
   gateway_id = aws_internet_gateway.igw.id
 }
 
+resource "aws_route" "private-apps" {
+  route_table_id            = aws_route_table.route-tables["apps"].id
+  destination_cidr_block    = "0.0.0.0/0"
+  #going through igw hence nat gateway_id
+  nat_gateway_id = aws_nat_gateway.ngw.id
+
+}
+
+resource "aws_route" "private-db" {
+  route_table_id            = aws_route_table.route-tables["db"].id
+  destination_cidr_block    = "0.0.0.0/0"
+  #going through igw hence nat gateway_id
+  nat_gateway_id = aws_nat_gateway.ngw.id
+
+}
+
 #resource "aws_route" "public" {
 #  route_table_id            = aws_route_table.route-tables["public"].id
 #  destination_cidr_block    = "0.0.0.0/0"
@@ -84,15 +100,18 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.route-tables["public"].id
 }
 
+
+
 #creating NAT
 
 #isp(gives ip) --->this ip will give it to the router--router-->route the traffic to all the systems
 #similarly igw--->nat--->subnets
+#creates eip and nat and gets associated to public subnets
 resource "aws_eip" "eip" {
   vpc = true
 }
 
-resource "aws_nat_gateway" "example" {
+resource "aws_nat_gateway" "ngw" {
   allocation_id = aws_eip.eip.id
   subnet_id     =  module.subnets["public"].out[0].id
 
@@ -100,6 +119,8 @@ resource "aws_nat_gateway" "example" {
     Name =  "Roboshop-${var.env}-NAT"
   }
 }
+
+
 
 
 
