@@ -19,6 +19,6 @@ resource "aws_route_table" "route-tables" {
 #  }
 
 resource "local_file" "foo" {
-  content = length(var.subnet_ids[var.name].*.id, count.index)
+  content = length(var.subnet_ids[var.name].*.id)
   filename = "/tmp/out"
 }
