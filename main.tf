@@ -141,6 +141,10 @@ resource "aws_vpc_peering_connection" "roboshop-to-default" {
   #to
   vpc_id        = var.default_vpc_id
   auto_accept   = true
+
+  tags = {
+    Name = "Roboshop-${var.env}-to-Default-vpc-"
+  }
 }
 
 
