@@ -74,6 +74,7 @@ resource "aws_route" "public" {
 #}
 
 
+#route table association for public subnets
 #output "out" {
 #  value = module.subnets["public"].out[*].id
 #}
@@ -81,6 +82,23 @@ resource "aws_route_table_association" "public" {
   count = length(module.subnets["public"].out[*].id)
   subnet_id      = element(module.subnets["public"].out[*].id, count.index )
   route_table_id = aws_route_table.route-tables["public"].id
+}
+
+#creating NAT
+
+#isp(gives ip) --->this ip will give it to the router--router-->route the traffic to all the systems
+#similarly igw--->nat--->subnets
+resource "aws_eip" "eip" {
+  vpc = true
+}
+
+resource "aws_nat_gateway" "example" {
+  allocation_id = aws_eip.eip.id
+  subnet_id     =  module.subnets["public"].out[0].id
+
+  tags = {
+    Name =  "Roboshop-${env}-NAT"
+  }
 }
 
 
