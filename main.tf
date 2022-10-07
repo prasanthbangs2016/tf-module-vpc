@@ -150,9 +150,9 @@ resource "aws_vpc_peering_connection" "roboshop-to-default" {
 
 resource "aws_route" "peering-route" {
   #taking all subnets
-  for_each = var.subnets
-  #adding
-  route_table_id            = aws_route_table.route-tables[each.value["name"]].id
+  count = length(aws_route_table.route-tables[*].id)
+  #getting and adding 3 route tables
+  route_table_id            = element(aws_route_table.route-tables[*].id, count.index )
   destination_cidr_block    = "0.0.0.0/0"
   #going through igw hence nat gateway_id
   vpc_peering_connection_id = aws_vpc_peering_connection.roboshop-to-default.id
