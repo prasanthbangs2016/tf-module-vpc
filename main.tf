@@ -143,8 +143,20 @@ resource "aws_vpc_peering_connection" "roboshop-to-default" {
   auto_accept   = true
 
   tags = {
-    Name = "Roboshop-${var.env}-to-Default-vpc-"
+    Name = "Roboshop-${var.env}-to-Default-vpc"
   }
+}
+
+
+resource "aws_route" "peering-route" {
+  #taking all subnets
+  for_each = var.subnets
+  #adding
+  route_table_id            = aws_route_table.route-tables[each.value[name]].id
+  destination_cidr_block    = "0.0.0.0/0"
+  #going through igw hence nat gateway_id
+  vpc_peering_connection_id = aws_vpc_peering_connection.roboshop-to-default.id
+
 }
 
 
