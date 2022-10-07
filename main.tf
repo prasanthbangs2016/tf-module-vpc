@@ -47,16 +47,31 @@ resource "aws_route_table" "route-tables" {
 }
 
 output "out" {
-  value = aws_route_table.route-tables["public"].id
+  value = module.subnets.out
 }
 
-#adding route to route table
+#creating rout table , taking subnets and adding route table to subnets
+
+resource "aws_route" "public" {
+  route_table_id            = aws_route_table.route-tables["public"].id
+  destination_cidr_block    = "0.0.0.0/0"
+  #going through igw hence gateway_id
+  gateway_id = aws_internet_gateway.igw.id
+}
 
 #resource "aws_route" "public" {
-#  for_each = var.subnets
-#  route_table_id            = each.value[]
-#  destination_cidr_block    = "10.0.1.0/22"
-#  vpc_peering_connection_id = "pcx-45ff3dc1"
-#  depends_on                = [aws_route_table.testing]
+#  route_table_id            = aws_route_table.route-tables["public"].id
+#  destination_cidr_block    = "0.0.0.0/0"
+#  #going through igw hence gateway_id
+#  gateway_id = aws_internet_gateway.igw.id
 #}
+
+#resource "aws_route" "public" {
+#  route_table_id            = aws_route_table.route-tables["public"].id
+#  destination_cidr_block    = "0.0.0.0/0"
+#  #going through igw hence gateway_id
+#  gateway_id = aws_internet_gateway.igw.id
+#}
+
+
 
