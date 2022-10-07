@@ -4,3 +4,16 @@ resource "aws_vpc" "main" {
     Name  = "Roboshop-${var.env}"
   }
 }
+
+
+module "subnets" {
+  #iterating subnets
+  for_each = var.subnets
+  source = "./subnets"
+  #creating name for subnets(app/db/public)
+  name  = each.value["name"]
+  #passing all the subnets
+  subnets = each.value["subnet_cidr"]
+  vpc_id   = aws_vpc.main.id
+
+}

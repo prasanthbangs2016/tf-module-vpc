@@ -1,0 +1,14 @@
+resource "aws_subnet" "main" {
+  #for_each = var.subnets
+  #iterating if list comes of 2 values it creates 2 or if it comes of  value it creates 1 or etc
+  count     = length(var.subnets)
+  vpc_id     = var.vpc_id
+  #cidr_block = each.value["subnet_cidr"] #this is for for each
+  #it brings all the subnets cidr
+  cidr_block = element(var.subnets, count.index)
+
+
+  tags = {
+    Name = "Roboshop-${var.name}"
+  }
+}
