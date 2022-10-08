@@ -41,9 +41,14 @@ module "routes" {
   source = "./routes"
   vpc_id   = aws_vpc.main.id
   name     = each.value["name"]
+  #sending subnet info
+  //subnet_ids  = module.subnets
 }
 
 
+output "out" {
+  value = module.subnets
+}
 
 #
 #output "out" {
