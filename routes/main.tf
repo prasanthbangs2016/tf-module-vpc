@@ -24,12 +24,25 @@ resource "local_file" "foo" {
   filename = "/tmp/out"
 }
 
+#creating route for public subnets
 resource "aws_route" "public" {
   #if var.name =public =1
-  count                    = var.name == "public" ? 1 : 0
+  count                    = var.igw  ? 1 : 0
   route_table_id            = aws_route_table.route-tables.id
   destination_cidr_block    = "0.0.0.0/0"
   #going through igw hence gateway_id
   gateway_id = var.gateway_id
 }
+
+#creating route for private subnets
+resource "aws_route" "private" {
+  #if var.name =public =1
+  #count                    = var.ngw == "public" ? 1 : 0
+  count                    = var.ngw ? 1 : 0
+  route_table_id            = aws_route_table.route-tables.id
+  destination_cidr_block    = "0.0.0.0/0"
+  #going through igw hence gateway_id
+  nat_gateway_id = var.nat_gateway_id
+}
+
 
