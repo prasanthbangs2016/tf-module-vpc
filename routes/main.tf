@@ -34,7 +34,7 @@ resource "aws_route" "public" {
   gateway_id = var.gateway_id
 }
 
-#creating route for private subnets
+#creating route for private subnets(apps and db)
 resource "aws_route" "private" {
   #if var.name =public =1
   #count                    = var.ngw == "public" ? 1 : 0
@@ -43,6 +43,15 @@ resource "aws_route" "private" {
   destination_cidr_block    = "0.0.0.0/0"
   #going through igw hence gateway_id
   nat_gateway_id = var.nat_gateway_id
+}
+
+resource "aws_route" "peering-route" {
+  #getting and adding 3 route tables
+  route_table_id            = aws_route_table.route-tables.id
+  destination_cidr_block    = var.default_vpc_cidr
+  #going through igw hence nat gateway_id
+  vpc_peering_connection_id = var.vpc_peering_connection_id
+
 }
 
 
