@@ -30,6 +30,6 @@ resource "aws_route" "public" {
   route_table_id            = aws_route_table.route-tables.id
   destination_cidr_block    = "0.0.0.0/0"
   #going through igw hence gateway_id
-  gateway_id = var.gateway_id 
+  gateway_id = var.gateway_id
 }
 

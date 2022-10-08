@@ -128,6 +128,9 @@ output "out" {
 #creates eip and nat and gets associated to public subnets
 resource "aws_eip" "eip" {
   vpc = true
+  tags = {
+    Name = "Roboshop-${var.env}eip"
+  }
 }
 
 resource "aws_nat_gateway" "ngw" {
