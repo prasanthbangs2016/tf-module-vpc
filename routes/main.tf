@@ -5,6 +5,6 @@ resource "aws_route_table" "route-tables" {
   vpc_id = var.vpc_id
 
   tags = {
-    Name = "Roboshop-${var.name}-rt"
+    Name = "Roboshop-${var.name}-${element(var.AZ, count.index)}-rt"
   }
 }
