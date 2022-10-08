@@ -125,22 +125,22 @@ output "out" {
 #
 ##isp(gives ip) --->this ip will give it to the router--router-->route the traffic to all the systems
 ##similarly igw--->nat--->subnets
-#creates eip and nat and gets associated to public subnets
-resource "aws_eip" "eip" {
-  vpc = true
-  tags = {
-    Name = "Roboshop-${var.env}eip"
-  }
-}
-
-resource "aws_nat_gateway" "ngw" {
-  allocation_id = aws_eip.eip.id
-  subnet_id     =  module.subnets["public"].out[0].id
-
-  tags = {
-    Name =  "Roboshop-${var.env}-NAT"
-  }
-}
+##creates eip and nat and gets associated to public subnets
+#resource "aws_eip" "eip" {
+#  vpc = true
+#  tags = {
+#    Name = "Roboshop-${var.env}eip"
+#  }
+#}
+#
+#resource "aws_nat_gateway" "ngw" {
+#  allocation_id = aws_eip.eip.id
+#  subnet_id     =  module.subnets["public"].out[0].id
+#
+#  tags = {
+#    Name =  "Roboshop-${var.env}-NAT"
+#  }
+#}
 
 
 ##vpc peering
