@@ -52,9 +52,9 @@ module "routes" {
 }
 
 
-output "out" {
-  value = module.subnets
-}
+# output "out" {
+#   value = module.subnets
+# }
 
 #
 #output "out" {
